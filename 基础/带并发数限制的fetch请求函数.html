@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实现一个带并发数限制的fetch请求函数</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push(返回新的长度),shift，unshift(返回新的长度),reverse,sort,splice
+      //https://juejin.cn/post/6844903796506624014
+      
+function sendRequest(urls,max,callback){
+    let finshied = 0
+    let total = urls.length
+    let results = []
+    const hander = ()=>{
+      if(urls.length){
+       const url = urls.shift()
+       fetch(url).then((res)=>{
+          results.push(res)
+       }).catch((e)=>{
+        results.push(e)
+       }).finally(()=>{
+         finshied++
+         hander()
+       })
+      }
+      if(finshied>=total){
+        callback(results)
+      }
+     
+    }
+    for(let i=0;i<max;i++){
+      hander()
+    }
+}
+
+
+   
+  </script>
+</body>
+</html>

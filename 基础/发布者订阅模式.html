@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>发布者订阅模式</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+      /*
+       构造函数分析：
+       属性：需要一个消息队列
+       {
+         click:[fn1,fn2,...],
+         abc:[fn1,fn2,...]
+       }
+       方法：向消息队列添加内容
+       方法：删除消息队列内容
+       方法：触发消息队列内容
+      */
+    
+    function Observer(){
+
+      this.messages = {}
+      this.on = function(type,fn){
+       if(!this.messages[type]){
+         this.messages[type] = []
+       }
+       this.messages[type].push(fn)
+      }
+      this.off = function(type,fn){
+        if(!fn){
+          delete this.messages[type]
+          return
+        }
+        this.messages[type] = this.messages[type].filter(item => item!==fn)
+       
+      }
+      this.trigger = function(type){
+        if(!this.messages[type]){
+           return
+        }else{
+          this.messages[type].forEach(fn=>{fn()})
+        }
+        
+      }
+
+    }
+
+    const person1 = new Observer()
+    person1.on("abc",fn1)
+    person1.on("abc",fn2)
+    person1.on("efg",fn3)
+    person1.on("efg",fn4)
+    person1.trigger("abc")
+    // console.log(person1)
+
+      function fn1(){
+        console.log("fn1")
+      }
+      function fn2(){
+        console.log("fn2")
+      }
+      function fn3(){
+        console.log("fn1")
+      }
+      function fn4(){
+        console.log("fn2")
+      }
+
+   
+  </script>
+</body>
+</html>

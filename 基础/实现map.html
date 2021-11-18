@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>实现map</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+   Array.prototype.myMap = function(callback,context){
+    let res = []
+    this.reduce((pre,curr,index,arr)=>{
+            res.push(callback.call(context,curr,index,arr))
+    },[])
+    return res
+   }
+   
+   const arr = ["1","2"]
+   const arr2 = ["3","4"]
+   const test = arr.myMap((value)=>{
+     return  value+"ddd"
+   })
+
+   const res = arr.reduce((pre,curr)=>{
+      return pre+curr
+   },[])
+   console.log(res)
+   console.log(test)
+  </script>
+</body>
+</html>

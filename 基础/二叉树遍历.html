@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>二叉树遍历</title>
+  </head>
+  <body>
+    <script>
+      //改变原数组的，pop,push,unshift，shift,,reverse,sort,splice
+      function hed(root) {
+        if (!root) {
+          return [];
+        }
+        const res = [];
+        const stack = [root];
+        while (stack.length !== 0) {
+          let top = stack.pop();
+          res.push(top.val);
+          if (top.right) {
+            stack.push(top.right);
+          }
+          if (top.left) {
+            stack.push(top.left);
+          }
+        }
+      }
+
+      function mid(root) {
+        if (!root) {
+          return [];
+        }
+        const res = [];
+        const stack = [];
+        while (stack.length !== 0 || root) {
+          while (root) {
+            stack.push(root);
+            root = root.left;
+          }
+          root = stack.pop();
+          res.push(root.val);
+          root = root.right;
+        }
+      }
+
+      function behind(root) {
+        if (!root) {
+          return [];
+        }
+        const res = [];
+        const stack = [root];
+        while (stack.length !== 0) {
+          let top = stack.pop();
+          res.unshift(top.val);
+          if (top.left) {
+            stack.push(top.left);
+          }
+          if (top.right) {
+            stack.push(top.right);
+          }
+        }
+      }
+
+      function level(root) {
+        if (!root) {
+          return [];
+        }
+        const res = [];
+        const queue = [root];
+        while (queue.length !== 0) {
+          let top = stack.shift();
+          res.push(top.val);
+          if (top.left) {
+            queue.push(top.left);
+          }
+          if (top.right) {
+            queue.push(top.right);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

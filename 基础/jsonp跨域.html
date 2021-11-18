@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>jsonp跨域</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+      /*
+      OPTIONS请求即预检请求，可用于检测服务器允许的http方法。
+      当发起跨域请求时，由于安全原因，触发一定条件时浏览器会
+      在正式请求之前自动先发起OPTIONS请求，即CORS预检请求，
+      服务器若接受该跨域请求，浏览器才继续发起正式请求。
+      Access-Control-Allow-Methods
+      Access-Control-Allow-Headers 
+      Access-Control-Allow-Origin
+      Access-Control-Max-Age
+
+      jsonp只支持get请求，iframe,img,link,script,
+      dns-prefecth
+
+      //ie对同源的不同定义：如果两个域都位于高度受信任的区域中（例如，公司Internet域），则不会应用同源限制。端口不一致也算同源
+      */
+     function test(args){
+       console.log(args)
+     }
+  </script>
+  <script src = "www.bytedance.com/dongchedi?callback=test">
+
+  function ajax(method,url,sucess,failed) {
+    let xhr 
+    if(window.XMLHttpRequest){
+      xhr = new XMLHttpRequest()
+    }else{
+      xhr = new ActiveXObject("Microsoft.XMLHTTP")
+    }
+    xhr.onreadystatechange = function () {
+      //0.请求未初始化，1.服务器已连接，2.请求已接受，3请求处理中，4请求完成，响应已就绪
+      if(xhr.readyState===4){
+          if(xhr.status===200){
+            sucess(xhr.responseText)
+          }else{
+            failed(xhr.responseText)
+          }
+      }
+    }
+    xhr.open(method,url)
+    xhr.send()
+    
+  }
+
+  </script>
+</body>
+</html>

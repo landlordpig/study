@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>函数柯里化</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+  //  function add(){
+  //   let args = Array.prototype.slice.call(arguments)
+  //   let addr = function(){
+  //     args.push(...arguments)
+  //     return addr
+  //   }
+  //   addr.toString = function(){
+  //     return args.reduce((a,b)=>{
+  //       return a+b
+  //     },0)
+  //   }
+  //   return addr
+
+  //  }
+  //https://www.bilibili.com/video/BV1954y1Q7mJ?p=3
+
+
+  //已知参数个数
+  function curry1(fn){
+    const len = fn.length
+    return function temp(){
+        let args = [...arguments]
+        if(args.length>=len){
+          return fn(...args)
+        }else{
+          return function(){
+            return temp(...args,...arguments)
+          }
+        }
+    }
+  }
+  function add1(x,y,z) {
+    return x + y +z
+   }
+  const yzadd = curry1(add1);
+  console.log(yzadd(1, 2, 3));
+  console.log(yzadd(1)(2)(3));
+  console.log(yzadd(1, 2)(3));
+  console.log(yzadd(1)(2, 3));
+
+  //未知参数个数
+
+  function curry2(fn){
+    let parmas = []
+    return function temp(...args){
+      if(args.length){
+          parmas = [...parmas,...args]
+          return temp
+      }else{
+        let tempArr = parmas
+        parmas = []
+        return fn(tempArr)
+      }
+    }
+
+  }
+  function add2(args){
+    return args.reduce((pre,curr)=>pre+curr,0)
+  }
+  const wzadd = curry2(add2);
+  console.log(wzadd(1, 2, 3)());
+  console.log(wzadd(1)(2)(3)());
+  console.log(wzadd(1, 2)(3)());
+  console.log(wzadd(1)(2, 3)());
+
+
+
+
+
+  
+  
+ 
+
+
+
+  </script>
+</body>
+</html>

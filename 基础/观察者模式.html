@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>观察者模式</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+      function Observer(name,fn = ()=>{}){
+          this.name  = name
+          this.fn = fn
+      }
+     const observer1 = new Observer("jack",(state)=>{console.log(state,"---")})
+     const observer2 = new Observer("mike",(state)=>{console.log(state,"+++")})
+     function Subject(state){
+       this.state = state
+       this.observers = []
+       this.setState = (state)=>{
+         this.state = state
+         this.observers.forEach(item=>{
+           item.fn(state)
+         })
+         
+       }
+       this.addObserver = (observer)=>{
+         this.observers.push(observer)
+       }
+       this.deleteObserver = function(observer){
+         this.observers = this.observers.filter(item => item!==observer)
+       }
+     }
+
+     const subject1 = new Subject("shuijiao")
+     subject1.addObserver(observer1)
+     subject1.addObserver(observer2)
+     subject1.deleteObserver(observer1)
+     console.log(subject1)
+    //  subject1.setState("chifan")
+    //  console.log(subject1)
+
+
+   
+  </script>
+</body>
+</html>

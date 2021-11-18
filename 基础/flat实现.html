@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>flat实现</title>
+</head>
+
+<body>
+  <script>
+    //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+    const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
+
+    // // 首先使用 reduce 展开一层
+    // arr.reduce((pre, cur) => {
+    //   console.log(pre,cur)
+    //   return pre.concat(cur)
+    // }, []);
+    // [1, 2, 3, 4, 1, 2, 3, [1, 2, 3, [1, 2, 3]], 5, "string", { name: "弹铁蛋同学" }];
+
+    // // 用 reduce 展开一层 + 递归
+    function flat(arr, num = 1) {
+      return num > 0 ? arr.reduce((pre, cur) => pre.concat(Array.isArray(cur) ? flat(cur, num - 1) : cur), []) : arr
+    }
+
+    function fn(arr,num=1) {
+      return num>0?arr.reduce((pre,curr)=>pre.concat(Array.isArray(curr)?flat(cur,num-1):cur),[]):arr
+    }
+    console.log(flat(arr, Infinity))
+    
+  </script>
+</body>
+
+</html>

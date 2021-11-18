@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>深拷贝</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+  let obj = {name:"jack",age:{age:15},fn:function(){}}
+   function depclone(obj){
+     
+     if(typeof obj !=="object" || obj===null){
+        return obj
+     }
+     let res 
+     if(obj instanceof Array){
+       res = []
+     }else{
+       res = {}
+     }
+     for(let key in obj){
+       res[key] = depclone(obj[key])
+     }
+     return res
+   }
+   const test = depclone(obj)
+   const test1 = JSON.parse(JSON.stringify(obj))
+   console.log(test1)
+   test.name = "mar"
+   test.age = 13
+   console.log(test)
+  // let obj = {name:"dsds"}
+  // let res={}
+  // for(let key in obj){
+  //   res[key] = obj[key]
+  // }
+  // res.name = "ede"
+  // console.log(res)
+  // console.log(obj)
+  
+    
+  </script>
+</body>
+</html>

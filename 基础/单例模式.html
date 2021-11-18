@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>单例模式</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+      const singeTon = (function(){
+        function Person(){
+        this.name = "jack"
+      }
+      let instance = null
+      return function(){
+        return instance || (instance = new Person())
+      }
+      })()
+      const p1 =  singeTon()
+      const p2 =  singeTon()
+      console.log(p1,p1)
+      console.log(p1===p2)
+
+
+   
+  </script>
+</body>
+</html>

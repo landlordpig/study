@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>快速排序</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+      //快排：nlogn nlogn 不稳定
+      //冒泡: n的平方 o(1) 稳定
+      //选择: n的平方 o(1) 不稳定
+    
+      const arr = [2,4,1,7,5,15,3,2]
+     
+     function quickSort(arr,l,r){
+       if(l>=r){
+         return 
+       }
+       let left = l
+       let right = r
+       let base = arr[left]
+       while(left<right){
+         while(arr[right]>=base&&left<right){
+            right--
+         }
+         arr[left] = arr[right]
+         while(arr[left]<=base&&left<right){
+           left++
+         }
+         arr[right]=arr[left]
+         if(left>=right){
+           arr[left] = base
+         }
+       }
+       quickSort(arr,l,right-1)
+       quickSort(arr,right+1,r)
+       return arr
+     }
+     
+     console.log(quickSort(arr,0,arr.length-1))
+    
+   
+  </script>
+</body>
+</html>

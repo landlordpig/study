@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>策略模式</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+      /*
+      一个问题匹配多个解决方案，不确定用到哪个方案，并且还可以随时添加方案
+      
+      */
+  const calcPrice = function(){
+    const sale = {
+      "100-10":(price)=>price-=10
+    }
+    
+      function calcPrice(price,type){
+        if(!sale[type]){
+          return
+        }
+        return sale[type](price)
+
+      }
+      calcPrice.addSale = (type,fn)=>{
+
+      }
+      calcPrice.deleteSale=(type,fn)=>{
+        
+      }
+      return calcPrice
+
+     }
+    
+    
+   
+  </script>
+</body>
+</html>

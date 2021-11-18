@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>test</title>
+</head>
+<body>
+  <script>
+    /*
+    var let const 区别:
+    var声明的变量会挂载到window上，let和const挂载到Script上（https://zhuanlan.zhihu.com/p/114128108）；
+    var声明的变量存在变量提升(js在设计的时候为了解决相互递归调用的问题)，let，const不会；
+    var声明的变量没有不存在块级作用域，后两者有
+    同一作用域下var可以声明同名变量，后两者不可以
+    let和const存在暂时性死区，const声明的变量不可以再改变
+    注：暂时性死区定义：当程序的控制流程在新的作用域（module function 或 block 作用域）进行实例化时，
+    在此作用域中用let/const声明的变量会先在作用域中被创建出来，但因此时还未进行词法绑定，所以是不能被
+    访问的，如果访问就会抛出错误。因此，在这运行流程进入作用域创建变量，到变量可以被访问之间的这一段时间，就称之为暂时死区。
+
+    loader和plugin区别：
+    loader：webpack自身只支持js和json这两种格式的文件，对于其他文件需要通过loader将其转换为commonJS规范的文件后，webpack才能解析到
+    plugin：是用于在webpack打包编译过程里，在对应的事件节点里执行自定义操作，比如资源管理、bundle文件优化等操作
+
+    //网络安全
+    //xss攻击：https://tech.meituan.com/2018/09/27/fe-security.html
+    //csrf攻击：https://tech.meituan.com/2018/10/11/fe-security-csrf.html
+    xss攻击：攻击者将恶意代码注入被攻击者的网站中，用户一旦访问网页就会执行注入的恶意代码，xss分为反射性和存储型和Dom型，反射性又称作非持久性，
+    通过url注入脚本，存储型则会把恶意代码存储到数据库中（比如收集表单数据时，未经任何处理就将数据存到数据库中，那么以后用户访问该页面时，
+    所有用户都会被危及。html代码转义(escapeHTML，escapeEmbedJSON（转义json格式数据）)，使之不能执行，还需要设置白名单，过滤掉以javascrit等等开头的链接。
+    校验用户输入输出。HttpOnly 防止劫取 Cookie，浏览器将禁止js代码读取带HttpOnly属性的cookie。纯前端渲染。
+    csrf：同源验证：Origin Header（ie11的同源策略和302重定向的情况下不会有）和Referer Header，注意忽略搜索引擎的链接。csrf Token。
+    双重cookie验证。SamesiteCookie。
+    CSRF自动防御策略：同源检测（Origin 和 Referer 验证）。
+    CSRF主动防御措施：Token验证 或者 双重Cookie验证 以及配合Samesite Cookie。
+    保证页面的幂等性，后端接口不要在GET页面中做用户操作。
+    syn泛洪攻击：SYN timeout时间，使得主机尽快释放半连接的占用或者采用SYN cookie设置，如果短时间内收到了某个IP的重复SYN请求，
+    我们就认为受到了攻击
+
+    class函数和构造函数的区别：
+    class函数的类和模块内部都是默认在严格模式下的
+    class不存在变量提升
+    class的所有方法默认是不可以枚举的
+    class的所有方法没有prototype，所以不能new
+    class必须通过new调用
+    class可以继承静态方法
+
+    useCallback和useMemo：
+    优化性能，一个返回缓存的函数，一个返回缓存的变量
+
+    为啥使用hooks：组件之间的逻辑状态难以复用，大型复杂组件难以拆分，class语法的使用不太友好
+    但是函数组件过于简陋，没有生命周期，不能自定义state并加以维护，没有this，但是不能直接修改
+    函数组件，不然有更大的成本，所以引入hooks，但是要注意依赖数组项的该变时机，异步操作不友好
+
+    redux和mobx
+    redux：状态改变，触发action createstore，dispatch（action）给store，store将的prestate
+    和action给reducer，reducer返回新的心得state，渲染页面更新
+    mobx：触发action，action改变state，通过computed拿到state的值，自动触发reactions，渲染视图
+    redux函数式编程，mobx更多的时面向对象
+    单一的store和多store
+    redux使用js原生对象存储数据，mobx是可观察对象，redux需要手动追踪所有转态，但是mobx是可观察对象，自动触发加监听
+    redux的对象状态是不可变的，我们不能直接操作对象，总是在原来对象上返回一个新的，mobx直接使用新值更新对象
+
+    react fiber：v16开始新增加的协调引擎，实现虚拟dom的增量渲染，可以让react的试图更新过程更加流畅。之前的
+    更新会调用组件声明周期函数->计算虚拟dom->更新真实的dom，整个过程是同步的，如果组件很多，主线程就会被一直占用
+    无法处理紧急任务。所以fiber就是为了解决旧版本视图更新的性能瓶颈。采用的方法是分片。降低试图更新的优先级。
+    它会将更新任务分成一个一个小片 ，每执行完一个任务就归还一次主线程。如果主线程有紧急任务，就执行紧急任务，
+    等紧急任务处理完，再重新执行任务分片。他将更新任务分为调度阶段和和渲染阶段，调度阶段更新数据生成新的虚拟dom
+    ，将其放在更新队列里， 渲染阶段执行跟新。实现原理有两点，暂停/重启，分散执行。暂停执行单链表数遍历算法，保存
+    遍历过程的上一步和下一步。分散执行利用requestAnimationFrame和requestIdelCallback
+
+    */
+// var fullName = '圆圆鼠';
+// var obj = {
+//     fullName: '方块猴',
+//     prop: {
+//         fullName: '三角兔',
+//         getFullName: function () {
+//           // setTimeout(() => console.log(this.fullName), 1000);
+//             setTimeout(function showName() {
+//                 console.log(this.fullName);
+//             }, 1000);
+//             return this.fullName;
+//         },
+//     },
+// };
+
+// // Question 1: 请问以下代码的输出是？
+// // console.log(obj.prop.getFullName());
+
+
+// // Question 2: 请问以下代码的输出是？
+// var getFullName = obj.prop.getFullName;
+// console.log(getFullName());
+
+// function b() {
+//     setTimeout(function (){alert(this)}, 0);
+// }
+// b()
+// const arr = [3,2,3,1,2,4,5,5,6,7,7,8,2,3,1,1,1,10,11,5,6,2,4,7,8,5,6]
+// const test = arr.sort((a,b)=>a-b)
+
+// console.log(test)
+// const res1 = (1+2)/2
+// const res2 = Math.floor((1+2)/2)
+// console.log(res1,res2)
+
+// const intervals = [[1,3],[2,6],[8,10],[15,18]]
+// var merge = function(intervals) {
+//     // sort方法里面的比较函数 详情可以看看MDN a[0]-b[0]类似 a-b 升序 这并不奇怪
+//    intervals.sort((a,b)=>a[0]-b[0])
+//    console.log(intervals.toString())
+//    // 注意这里对同一个数组进行了读写操作
+//    // 存在i+1操作 所以intervals.length-1
+//    for(let i=0;i<intervals.length-1;i++){
+//        let start = intervals[i][1]
+//        let end = intervals[i+1][0]
+//        if(start>=end){
+//          // 根据规律 说明这个区间可以合并
+//          const data = [...intervals[i],...intervals[i+1]]
+//          const item = [Math.min(...data), Math.max(...data)];
+//           intervals.splice(i, 2, item);
+//           i--; // 回退操作 看看新调整的区间可以跟后面的合并不
+//        }
+//    }
+//    return intervals
+// };
+
+
+class Student{
+   constructor(name,age){
+        this.name = name
+        this.age = age
+    }
+     static study(){
+        console.log('学习')
+      }
+  }
+
+  class collegeStu extends Student{
+    constructor(name,age,school){
+        super(name,age)
+        this.school = school
+    }
+  }
+  
+  // let student1 = new Student('小明',10)
+  // student1.study() // 学习
+
+  let collegeStu1 = new collegeStu('小华',20,'xxx大学')
+  collegeStu.study() // 继承父类的方法 学习
+
+// const singleTon = (function() {
+//   function Person() {
+//   }
+//   let instance = null
+//   return function () {
+//     return instance || (instance=new Person())
+    
+//   }
+// })()
+
+// const p1 = new singleTon()
+// const p2 = new singleTon()
+// console.log(p1===p2)
+// function add(x,y,z) {
+//   return x+y+z
+// }
+
+// function curry(fn) {
+//   let len = fn.length
+//   return function temp() {
+//     let args = [...arguments]
+//     if(args.length>=len){
+//       return fn(...args)
+//     }else{
+//       return function() {
+//         return temp(...args,...arguments)
+//       }
+//     }
+//   }
+// }
+// const arr = [2,4,1,7,5,15,3,2]
+     
+// function quickSort(arr,l,r) {
+
+//   if(l>=r){
+//     return
+//   }
+//   let left = l
+//   let right = r
+//   let base = arr[left]
+//   while(left<right){
+//      while(arr[right]>=base && left<right){
+//        right--
+//      }
+//      arr[left] = arr[right]
+//      while(arr[left]<=base && left<right){
+//        left++
+//      }
+//      arr[right] = arr[left]
+//      if(left>=right){
+//        arr[left] = base
+//      }
+    
+//   }
+//   quickSort(arr,l,right-1)
+//        quickSort(arr,right+1,r)
+//        return arr
+
+  
+// }
+// console.log(quickSort(arr,0,arr.length-1))
+
+
+  </script>
+
+
+</body>
+</html>

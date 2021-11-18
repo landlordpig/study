@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>大数相加</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+  //  function add (a,b){
+  //    const len = Math.max(a.length,b.length)
+  //    a = a.padStart(len,0)
+  //    b = b.padStart(len,0)
+  //    let f = 0
+     
+  //    let sum = ""
+  //    for(let i = len-1;i>=0;i--){
+  //     const t = parseInt(a[i])+parseInt(b[i])+f
+  //     f = Math.floor(t/10)
+  //     sum = t%10 + sum
+  //    }
+  //    if(f===1){
+  //      sum = 1 + sum
+  //    }
+  //    return sum
+  //  }
+  function add(str1,str2) {
+    const len = Math.max(str1.length,str2.length)
+    str1 = str1.padStart(len,0)
+    str2 = str2.padStart(len,0)
+    let f = 0
+    let res = ""
+    for(let i=len-1;i>=0;i--){
+       const t = parseInt(str1[i])+parseInt(str2[i])+f
+       f = Math.floor(t/10)
+       res = t%10 + res
+    }
+    if(f===1){
+      res+=f
+    }
+    return res
+    
+  }
+   console.log(add("9007199254740991","1234567899999999999"))
+  </script>
+</body>
+</html>

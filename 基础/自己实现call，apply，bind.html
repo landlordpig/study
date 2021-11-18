@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>自己实现call，apply，bind</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+      //箭头函数体内的this对象，就是定义该函数时所在的作用域所指向的对象，而不是使用时所在的作用域指向的对象。
+   function person(a,b,c){
+    
+     console.log(this.name)
+     console.log(a,b,c)
+   }
+   const obj = {name:"jack"}
+
+  //  Function.prototype.myCall = function(tempobj){
+  //   let obj = tempobj || window
+  //   obj.p = this
+  //   let newArgs = []
+  //   for(let i=1;i<arguments.length;i++){
+  //     newArgs.push('arguments['+i+']')
+  //   }
+  //   const res = eval('obj.p('+newArgs+')')
+  //   delete obj.p
+  //   return res
+  //  }
+  Function.prototype.myCall = function (obj) {
+     const args = [...arguments]
+     obj = obj || window
+     obj.p = this
+     const newArgs = args.slice(1)
+     const res = obj.p(...newArgs)
+     delete obj.p
+     return res
+  }
+  //  Function.prototype.myApply = function(temobj){
+  //    let obj = temobj || window
+  //    let res 
+  //    obj.p = this
+  //    let newArgs = []
+  //    if(arguments.length===1){
+  //      res = obj.p()
+  //    }else{
+  //     for(let i=0;i<arguments[1].length;i++){
+  //      newArgs.push('arguments[1]['+i+']')
+  //    }
+  //     res = eval('obj.p('+newArgs+')')
+  //    }
+  //    delete obj.p
+  //    return res
+    
+  //  }
+  Function.prototype.myApply = function (obj) {
+      const args = [...arguments]
+      obj = obj || window
+      obj.p = this
+      const newArgs = args.slice(1)
+      const res = obj.p(...newArgs[0])
+      delete obj.p
+      return res
+  } 
+  //  Function.prototype.myBind = function(obj){
+  //   const that = this
+  //   const args = Array.prototype.slice.call(arguments,1)
+  //  const temp = function(){}
+  //   const newF = function(){
+  //     const _args = Array.prototype.slice.call(arguments)
+  //     const newArgs = args.concat(_args)
+  //     if(this instanceof newF){
+  //       that.apply(this,newArgs)
+  //     }else{
+  //       that.apply(obj,newArgs)
+  //     }
+
+  //   }
+  //   temp.prototype = that.prototype//否则执行new操作后的实列对象拿不到原型对象上的属性
+  //   newF.prototype = new temp()
+  //   // newF.prototype = new that()
+  //   return newF
+  //  }
+  Function.prototype.myBind = function (obj) {
+    const that = this
+    const args = Array.prototype.slice.call(arguments,1)
+    function temp() {}
+    function newF() {
+      const _args = [...arguments]
+      const newArgs = args.concat(_args)
+      if(this instanceof temp){
+        that.apply(this,newArgs)
+      }else{
+        that.apply(obj,newArgs)
+      }
+    }
+    temp.prototype = that.prototype
+    newF.prototype = new temp()
+    return newF
+  }
+  //  person.myCall(obj,"1","2","3")
+  //  person.myApply(obj,["1","2","3"])
+   const fn =  person.myBind(obj,"1","2")
+   fn(3)
+   const a = new fn("3")
+  //  const fn =  person.bind(obj,"1","2")
+  //  fn(3)
+  //  const a = new fn("3")
+    
+  </script>
+</body>
+</html>

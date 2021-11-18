@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>防抖节流</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+   function debounce(fn,delay) {
+   let timer 
+   return (...args)=>{
+     clearTimeout(timer)
+     timer = setTimeout(()=>{
+    fn(...args)
+     },delay)
+   }
+   }
+
+   function throttle(fn,delay){
+      let timer
+      return (...args)=>{
+        if(timer)return
+        timer = setTimeout(()=>{
+        fn(...args)
+        timer = null
+        },delay)
+      }
+   }
+
+   function throttle1(fn,delay){
+      let preTime = new Date().getTime()
+      return function(...args){
+        let nowTime = new Date().getTime()
+        if((nowTime-preTime)>delay){
+            return fn.call(this,...args)
+            preTime = nowTime
+        }
+      }
+   }
+    
+  </script>
+</body>
+</html>

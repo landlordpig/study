@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>继承</title>
+</head>
+<body>
+  <script>
+      //改变原数组的，pop,push,shift,unshift,reverse,sort,splice
+
+      //原型链继承：父类引用类型属性会被所有后代实例对象共享；创建后代实例时，不能主动向父构造函数传参
+      //构造函数继承：不能继承父类原型对象上的属性和方法
+      //组合继承：会调用两次父构造函数
+   function Father(name){
+     this.name = name
+     this.colors = ["red","origin"]
+   }
+   Father.prototype.say = function(){
+     console.log(this.name)
+   }
+   function Child(name,age){
+     Father.call(this,name)//1次
+     this.age = age
+   }
+   const temp = function(){}
+   temp.prototype = Father.prototype
+   Child.prototype = new temp()
+   // Child.prototype = Father.prototype
+   Child.prototype.constructor = Child
+   const child1 = new Child("lili",18)
+   console.log(child1)
+   child1.say()
+  </script>
+</body>
+</html>

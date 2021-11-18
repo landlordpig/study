@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>自己实现new</title>
+</head>
+<body>
+  <script>
+// 创建一个新对象。
+// 新对象隐式原型链接到构造函数显式原型。
+// 执行构造函数并将构造函数作用域指向新对象。
+// 返回新对象。
+
+function Name(name,age) {
+  this.name = name
+  this.age = age
+}
+const name = new Name("jack",1)
+console.log(name)
+
+  function myNew(){
+      const constr = Array.prototype.shift.call(arguments)
+      const obj  = Object.create(constr.prototype)
+      const res = constr.apply(obj,arguments)
+      return res instanceof Object?res:obj//instanceof 运算符用于测试构造函数的 prototype 属性是否出现在对象原型链中的任何位置
+  }
+  const b = myNew(Name,"jack",1)
+  console.log(b)
+
+  
+  
+
+    
+  </script>
+</body>
+</html>
